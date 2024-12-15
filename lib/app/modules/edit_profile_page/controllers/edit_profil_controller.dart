@@ -37,8 +37,6 @@ class EditProfileController extends GetxController {
     }
 
     await _authController.updateUserProfile(name, username, email, age);
-    Get.snackbar('Success', 'Profile updated successfully',
-        backgroundColor: Colors.green);
     isLoading.value = false;
   }
 }

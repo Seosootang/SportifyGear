@@ -187,7 +187,6 @@ class EditProfileView extends StatelessWidget {
                         child: ElevatedButton(
                           onPressed: () {
                             _editProfileController.updateUserProfile();
-                            Get.back();
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xFFD3A335),
