@@ -25,11 +25,12 @@ class NetworkController extends GetxController {
           style: TextStyle(color: Colors.white, fontSize: 14),
         ),
         isDismissible: false,
-        duration: const Duration(days: 1),
+        duration: const Duration(seconds: 3),
         backgroundColor: Colors.red[400]!,
         icon: const Icon(Icons.wifi_off, color: Colors.white, size: 35),
         margin: EdgeInsets.zero,
       );
+      
     } else {
       if (Get.isSnackbarOpen) {
         Get.closeCurrentSnackbar();

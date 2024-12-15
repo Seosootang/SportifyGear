@@ -31,34 +31,67 @@ class AuthController extends GetxController {
   }
 
   // Login function
-  Future<void> loginUser(String email, String password) async {
-    try {
-      isLoading.value = true;
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
+Future<void> loginUser(String email, String password) async {
+  try {
+    isLoading.value = true;
+
+    // Attempt to sign in the user
+    UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    User? user = userCredential.user;
+
+    if (user != null) {
+      DocumentSnapshot userData = await _firestore.collection('users').doc(user.uid).get();
+      userProfile.value = userData.data() as Map<String, dynamic>;
+
+      // Save login state
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isLoggedIn', true);
+
+      Get.snackbar(
+        'Success',
+        'Login successful!',
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
       );
-      User? user = userCredential.user;
-
-      if (user != null) {
-        DocumentSnapshot userData = await _firestore.collection('users').doc(user.uid).get();
-        userProfile.value = userData.data() as Map<String, dynamic>;
-
-        // Save login state
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setBool('isLoggedIn', true);
-      }
-
-      Get.snackbar('Berhasil', 'Login berhasil!', backgroundColor: Colors.green, colorText: Colors.white);
       Get.offAll(() => StorePage());
-    } on FirebaseAuthException {
-      GetStorage().write(
-          'pendingLogin', {'email': email, 'password': password});
-      // Menampilkan pesan error yang seragam untuk setiap kesalahan login
-    } finally {
-      isLoading.value = false;
     }
+  } on FirebaseAuthException catch (e) {
+    String errorMessage;
+
+    // Handle specific Firebase Auth exceptions
+    switch (e.code) {
+      case "user-not-found":
+        errorMessage = "User not found. Please register or check your credentials.";
+        break;
+      case "wrong-password":
+        errorMessage = "Incorrect password. Please try again.";
+        break;
+      case "invalid-email":
+        errorMessage = "Invalid email format.";
+        break;
+      case "user-disabled":
+        errorMessage = "This account has been disabled. Contact support.";
+        break;
+      default:
+        errorMessage = "An unexpected error occurred. Please try again.";
+        storage.write('pendingLogin', {'email': email, 'password': password});
+    }
+
+    Get.snackbar(
+      'Login Failed',
+      errorMessage,
+      backgroundColor: Colors.red,
+      colorText: Colors.white,
+    );
+
+  } finally {
+    isLoading.value = false;
   }
+}
+
 
   // Register function
   Future<void> registerUser(String email, String password) async {
