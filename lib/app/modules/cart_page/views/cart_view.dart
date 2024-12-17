@@ -20,8 +20,8 @@ class CartPage extends StatelessWidget {
       body: Obx(() => cartController.cartItems.isEmpty
           ? const Center(
               child: Text(
-                "Keranjang Kosong",
-                style: TextStyle(fontSize: 18, color: Colors.grey),
+                "Keranjang Kamu Kosong!",
+                style: TextStyle(fontSize: 18, color: Colors.grey, fontStyle: FontStyle.italic),
               ),
             )
           : Padding(
@@ -53,7 +53,7 @@ class CartPage extends StatelessWidget {
                       ),
                       child: const Text(
                         'CHECK OUT',
-                        style: TextStyle(fontSize: 16),
+                        style: TextStyle(fontSize: 16, color: Colors.white),
                       ),
                     ),
                   ],
@@ -63,7 +63,6 @@ class CartPage extends StatelessWidget {
     );
   }
 
-  // Widget untuk item di keranjang
   Widget _buildCartItem(Map<String, dynamic> item, int index) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16.0),
@@ -140,7 +139,6 @@ class CartPage extends StatelessWidget {
     );
   }
 
-  // Widget untuk total harga
   Widget _buildTotalSection() {
     final cartController = Get.find<CartController>();
     double totalPrice = cartController.cartItems.fold(0, (sum, item) {

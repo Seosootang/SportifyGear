@@ -11,7 +11,7 @@ void main() async {
 
   await Firebase.initializeApp();
   await NotificationService().initNotifications();
-  Get.lazyPut<CartController>(() => CartController());
+  Get.put(CartController());
 
   runApp(MyApp());
 }
@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Ventela Barabai',
       initialRoute: Routes.HOME,
       getPages: [

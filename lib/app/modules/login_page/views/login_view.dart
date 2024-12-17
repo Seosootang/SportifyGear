@@ -92,9 +92,9 @@ class LoginPage extends StatelessWidget {
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("SIGN IN"),
+                          Text("SIGN IN", style: TextStyle(color: Colors.white),),
                           SizedBox(width: 8),
-                          Icon(Icons.arrow_forward),
+                          Icon(Icons.arrow_forward, color: Colors.white,),
                         ],
                       ),
               );
@@ -129,17 +129,16 @@ class LoginPage extends StatelessWidget {
             ),
             SizedBox(height: 16),
             // Facebook connect button (dummy action)
-            ElevatedButton.icon(
-              onPressed: () {
-                // Add Facebook login logic here
-              },
-              icon: Icon(Icons.facebook),
-              label: Text("Connect with Facebook"),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+              ElevatedButton.icon(
+                onPressed: () {
+                  // Add Facebook login logic here
+                },
+                label: Text("Login As Guess", style: TextStyle(color: Colors.white),),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                ),
               ),
-            ),
           ],
         ),
       ),

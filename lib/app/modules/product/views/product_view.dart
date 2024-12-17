@@ -108,7 +108,7 @@ class _ProductPageState extends State<ProductPage> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFFD3A335),
                   ),
-                  child: Text("Buy Now"),
+                  child: Text("Buy Now", style: TextStyle(color: Colors.white),),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -136,7 +136,7 @@ class _ProductPageState extends State<ProductPage> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFFD3A335),
                   ),
-                  child: Text("Add to Cart"),
+                  child: Text("Add to Cart", style: TextStyle(color: Colors.white),),
                 ),
               ],
             ),

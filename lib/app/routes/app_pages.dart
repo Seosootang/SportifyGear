@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-
 import '../modules/cart_page/views/cart_view.dart';
 import '../modules/chat_page/views/chat_view.dart';
 import '../modules/forget_password/bindings/forget_password_binding.dart';
@@ -7,6 +6,8 @@ import '../modules/forget_password/views/forget_password_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login_page/views/login_view.dart';
+import '../modules/order/bindings/order_binding.dart';
+import '../modules/order/views/order_view.dart';
 import '../modules/profile_page/views/profile_view.dart';
 import '../modules/signup_page/views/signup_view.dart';
 import '../modules/store_page/views/store_view.dart';
@@ -54,14 +55,17 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.WISHLIST,
-      page: () => WishlistPage(
-        wishlist: const [],
-      ),
+      page: () => WishlistPage(),
     ),
     GetPage(
       name: _Paths.FORGET_PASSWORD,
       page: () => ForgetPasswordPage(),
       binding: ForgetPasswordBinding(),
+    ),
+    GetPage(
+      name: _Paths.ORDER,
+      page: () => OrderPage(),
+      binding: OrderBinding(),
     ),
   ];
 }

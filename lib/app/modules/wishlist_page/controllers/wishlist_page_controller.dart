@@ -1,23 +1,29 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class WishlistPageController extends GetxController {
-  //TODO: Implement WishlistPageController
+class WishlistItem {
+  final String name;
+  final int price;
+  final String imagePath;
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  WishlistItem({required this.name, required this.price, required this.imagePath});
+}
+
+class WishlistController extends GetxController {
+  var wishlist = <WishlistItem>[].obs;
+
+  void addToWishlist(String name, String imagePath, int price) {
+    wishlist.add(WishlistItem(name: name, imagePath: imagePath, price: price));
+    Get.snackbar(
+      "Wishlist",
+      "$name telah ditambahkan ke wishlist!",
+      snackPosition: SnackPosition.TOP,
+      backgroundColor: Colors.white,
+      colorText: Colors.black,
+    );
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  void removeFromWishlist(int index) {
+    wishlist.removeAt(index);
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

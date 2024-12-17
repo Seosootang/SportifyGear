@@ -1,27 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/app/modules/product/views/product_view.dart';
+import 'package:flutter_application_1/app/modules/wishlist_page/controllers/wishlist_page_controller.dart';
+import 'package:get/get.dart';
 
-class WishlistItem {
-  final String name;
-  final String imagePath;
-
-  WishlistItem({required this.name, required this.imagePath});
-}
-
-class WishlistPage extends StatefulWidget {
-  final List<WishlistItem> wishlist;
-
-  WishlistPage({required this.wishlist});
-
-  @override
-  _WishlistPageState createState() => _WishlistPageState();
-}
-
-class _WishlistPageState extends State<WishlistPage> {
-  void _removeFromWishlist(int index) {
-    setState(() {
-      widget.wishlist.removeAt(index);
-    });
-  }
+class WishlistPage extends StatelessWidget {
+  final WishlistController wishlistController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -39,20 +22,75 @@ class _WishlistPageState extends State<WishlistPage> {
           ),
         ),
       ),
-      body: ListView.builder(
-        itemCount: widget.wishlist.length,
-        itemBuilder: (context, index) {
-          final item = widget.wishlist[index];
-          return ListTile(
-            leading: Image.asset(item.imagePath, width: 50, height: 50),
-            title: Text(item.name),
-            trailing: IconButton(
-              icon: Icon(Icons.delete, color: Colors.red),
-              onPressed: () => _removeFromWishlist(index),
+      body: Obx(() {
+        if (wishlistController.wishlist.isEmpty) {
+          return Center(
+            child: Text(
+              'Wishlist kamu kosong!',
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.grey,
+                fontStyle: FontStyle.italic,
+              ),
             ),
           );
-        },
-      ),
+        }
+        return ListView.builder(
+          padding: const EdgeInsets.all(10.0),
+          itemCount: wishlistController.wishlist.length,
+          itemBuilder: (context, index) {
+            final item = wishlistController.wishlist[index];
+            return GestureDetector(
+              onTap: () {
+                Get.to(() => ProductPage(
+                      title: item.name,
+                      price: item.price,
+                      imagePath: item.imagePath,
+                    ));
+              },
+              child: Card(
+                color: Colors.white,
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset(
+                          item.imagePath,
+                          width: 70,
+                          height: 70,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      const SizedBox(width: 15),
+                      Expanded(
+                        child: Text(
+                          item.name,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete, color: Colors.red),
+                        onPressed: () {
+                          wishlistController.removeFromWishlist(index);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      }),
     );
   }
 }
