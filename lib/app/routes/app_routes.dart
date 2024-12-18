@@ -17,6 +17,7 @@ abstract class Routes {
   static const ORDER = _Paths.ORDER;
   static const REVIEW = _Paths.REVIEW;
   static const BUYPAGE = _Paths.BUYPAGE;
+  static const ADMIN = _Paths.ADMIN;
 }
 
 abstract class _Paths {
@@ -36,4 +37,5 @@ abstract class _Paths {
   static const ORDER = '/order';
   static const REVIEW = '/review';
   static const BUYPAGE = '/buypage';
+  static const ADMIN = '/admin';
 }

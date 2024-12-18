@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/cart_controller.dart';
+import 'package:flutter_application_1/app/auth_controller.dart';
+import 'package:flutter_application_1/app/modules/guest_login/views/guest_login_view.dart';
 
 class CartPage extends StatelessWidget {
   final CartController cartController = Get.find<CartController>();
+  final AuthController authController = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
+    final String? userId = authController.currentUser?.uid;
+
+    if (userId == null) {
+      // Redirect guest user to login prompt
+      return GuestLoginPrompt();
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -21,7 +31,10 @@ class CartPage extends StatelessWidget {
           ? const Center(
               child: Text(
                 "Keranjang Kamu Kosong!",
-                style: TextStyle(fontSize: 18, color: Colors.grey, fontStyle: FontStyle.italic),
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.grey,
+                    fontStyle: FontStyle.italic),
               ),
             )
           : Padding(
@@ -36,7 +49,8 @@ class CartPage extends StatelessWidget {
             )),
       bottomNavigationBar: Obx(() {
         return cartController.cartItems.isEmpty
-            ? const SizedBox.shrink() // Ini untuk mengembalikan widget kosong jika keranjang kosong
+            ? const SizedBox
+                .shrink() // Ini untuk mengembalikan widget kosong jika keranjang kosong
             : Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
@@ -160,3 +174,5 @@ class CartPage extends StatelessWidget {
     );
   }
 }
+
+

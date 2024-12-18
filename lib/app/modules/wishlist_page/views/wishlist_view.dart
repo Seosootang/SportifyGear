@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app/modules/product/views/product_view.dart';
 import 'package:flutter_application_1/app/modules/wishlist_page/controllers/wishlist_page_controller.dart';
+import 'package:flutter_application_1/app/modules/guest_login/views/guest_login_view.dart';
+import 'package:flutter_application_1/app/auth_controller.dart';
 import 'package:get/get.dart';
 
 class WishlistPage extends StatelessWidget {
   final WishlistController wishlistController = Get.find();
-
+  final AuthController authController = Get.put(AuthController());
+  
   @override
   Widget build(BuildContext context) {
+    final String? userId = authController.currentUser?.uid;
+
+    if (userId == null) {
+      // Redirect guest user to login prompt
+      return GuestLoginPrompt();
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

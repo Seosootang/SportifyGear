@@ -13,7 +13,9 @@ import '../modules/signup_page/views/signup_view.dart';
 import '../modules/store_page/views/store_view.dart';
 import '../modules/wishlist_page/views/wishlist_view.dart';
 
-import '../modules/cart_page/bindings/cart_binding.dart'; // Tambahkan import CartBinding
+import '../modules/cart_page/bindings/cart_binding.dart';
+import '../modules/admin_page/bindings/admin_binding.dart'; // Tambahkan import AdminBinding
+import '../modules/admin_page/views/admin_view.dart'; // Tambahkan import AdminPage
 
 part 'app_routes.dart';
 
@@ -47,7 +49,7 @@ class AppPages {
     GetPage(
       name: _Paths.CART,
       page: () => CartPage(),
-      binding: CartBinding(), // Tambahkan binding di sini
+      binding: CartBinding(),
     ),
     GetPage(
       name: _Paths.CHAT,
@@ -66,6 +68,11 @@ class AppPages {
       name: _Paths.ORDER,
       page: () => OrderPage(),
       binding: OrderBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADMIN, // Tambahkan halaman admin di sini
+      page: () => AdminPage(),
+      binding: AdminBinding(),
     ),
   ];
 }

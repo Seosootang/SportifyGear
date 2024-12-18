@@ -4,13 +4,14 @@ import 'package:flutter_application_1/app/modules/profile_page/controllers/profi
 import 'package:flutter_application_1/app/auth_controller.dart';
 import 'package:flutter_application_1/app/storage_controller.dart';
 import 'package:flutter_application_1/app/modules/edit_profile/views/edit_profil_view.dart';
+import 'package:flutter_application_1/app/modules/guest_login/views/guest_login_view.dart';
 import 'package:get/get.dart';
 
 class ProfilePage extends StatelessWidget {
   final ProfileController profileController = Get.put(ProfileController());
   final AuthController _authController = Get.put(AuthController());
   final StorageController storageController = Get.put(StorageController());
-  
+
   ProfilePage() {
     // Fetch user profile data when ProfilePage loads
     _authController.fetchUserProfile();
@@ -18,6 +19,13 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String? userId = _authController.currentUser?.uid;
+
+    if (userId == null) {
+      // Redirect guest user to login prompt
+      return GuestLoginPrompt();
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -34,7 +42,7 @@ class ProfilePage extends StatelessWidget {
             ),
           );
         }
-        
+
         return Column(
           children: [
             // Profile picture and info section
@@ -54,24 +62,30 @@ class ProfilePage extends StatelessWidget {
                           alignment: Alignment.center,
                           children: [
                             // Profile Image
-                            _authController.userProfile['profileImageUrl'] != null
+                            _authController.userProfile['profileImageUrl'] !=
+                                    null
                                 ? CircleAvatar(
                                     radius: 50,
                                     backgroundImage: NetworkImage(
-                                      _authController.userProfile['profileImageUrl'],
+                                      _authController
+                                          .userProfile['profileImageUrl'],
                                     ),
                                   )
-                                : profileController.selectedImagePath.value.isEmpty
+                                : profileController
+                                        .selectedImagePath.value.isEmpty
                                     ? CircleAvatar(
                                         radius: 50,
                                         backgroundColor: Colors.black,
-                                        child: Icon(Icons.person, size: 50, color: Colors.white),
+                                        child: Icon(Icons.person,
+                                            size: 50, color: Colors.white),
                                       )
                                     : CircleAvatar(
                                         radius: 50,
-                                        backgroundImage: FileImage(File(profileController.selectedImagePath.value)),
+                                        backgroundImage: FileImage(File(
+                                            profileController
+                                                .selectedImagePath.value)),
                                       ),
-                            
+
                             // Loading Overlay
                             if (profileController.isLoading.value)
                               Container(
@@ -126,7 +140,7 @@ class ProfilePage extends StatelessWidget {
               subtitle: Text('Edit your information'),
               trailing: Icon(Icons.arrow_forward),
               onTap: () {
-                Get.to(() => EditProfileView());  // Navigate to EditProfileView
+                Get.to(() => EditProfileView()); // Navigate to EditProfileView
               },
             ),
 

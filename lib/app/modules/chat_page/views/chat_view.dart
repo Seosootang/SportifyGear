@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/app/modules/guest_login/views/guest_login_view.dart';
+import 'package:flutter_application_1/app/auth_controller.dart';
+import 'package:get/get.dart';
 
 class ChatPage extends StatefulWidget {
   @override
@@ -6,12 +9,20 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+  final AuthController authController = Get.put(AuthController());
   List<String> messages = []; // List to store messages
   final TextEditingController _controller = TextEditingController(); // Controller for the input field
   int? _editingIndex; // Variable to keep track of the index being edited
 
   @override
   Widget build(BuildContext context) {
+    final String? userId = authController.currentUser?.uid;
+
+    if (userId == null) {
+      // Redirect guest user to login prompt
+      return GuestLoginPrompt();
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

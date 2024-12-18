@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/app/modules/login_page/views/login_view.dart';
 import 'package:flutter_application_1/app/modules/store_page/views/store_view.dart';
+import 'package:flutter_application_1/app/modules/admin_page/views/admin_view.dart';
 import 'package:get/get.dart';
 
 class AuthController extends GetxController {
@@ -15,6 +16,9 @@ class AuthController extends GetxController {
   // State untuk visibilitas password
   RxBool isPasswordHidden = true.obs;
 
+  // State to track guest login
+  RxBool isGuest = false.obs;
+
   // Data profil pengguna
   RxMap<String, dynamic> userProfile = <String, dynamic>{}.obs;
 
@@ -23,7 +27,16 @@ class AuthController extends GetxController {
     isPasswordHidden.value = !isPasswordHidden.value;
   }
 
-  // Login function
+  // Login as Guest
+  void loginAsGuest() {
+    isGuest.value = true;
+    Get.offAll(() => StorePage()); // Redirect to StorePage
+  }
+
+  // Check if user is a guest
+  bool get isUserGuest => isGuest.value;
+
+  // Login function dengan pemeriksaan role
   Future<void> loginUser(String email, String password) async {
     try {
       isLoading.value = true;
@@ -34,18 +47,34 @@ class AuthController extends GetxController {
       User? user = userCredential.user;
 
       if (user != null) {
-        DocumentSnapshot userData =
-            await _firestore.collection('users').doc(user.uid).get();
-        userProfile.value = userData.data() as Map<String, dynamic>;
-      }
+        // Jika email adalah email admin
+        if (email == "sneakerspacedev@gmail.com" && password == "admin123") {
+          Get.snackbar(
+            'Berhasil',
+            'Login sebagai Admin berhasil!',
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+          );
+          Get.offAll(() => AdminPage());
+        } else {
+          // Ambil data profil pengguna dari Firestore
+          DocumentSnapshot userData =
+              await _firestore.collection('users').doc(user.uid).get();
+          userProfile.value = userData.data() as Map<String, dynamic>;
 
-      Get.snackbar('Berhasil', 'Login berhasil!',
-          backgroundColor: Colors.green, colorText: Colors.white);
-      Get.offAll(() => StorePage());
-    } on FirebaseAuthException {
+          Get.snackbar(
+            'Berhasil',
+            'Login sebagai Pengguna berhasil!',
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+          );
+          Get.offAll(() => StorePage());
+        }
+      }
+    } on FirebaseAuthException catch (e) {
       Get.snackbar(
         'Error',
-        'Email atau Password Salah',
+        e.message ?? 'Email atau Password Salah',
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );

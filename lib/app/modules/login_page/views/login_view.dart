@@ -92,9 +92,15 @@ class LoginPage extends StatelessWidget {
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("SIGN IN", style: TextStyle(color: Colors.white),),
+                          Text(
+                            "SIGN IN",
+                            style: TextStyle(color: Colors.white),
+                          ),
                           SizedBox(width: 8),
-                          Icon(Icons.arrow_forward, color: Colors.white,),
+                          Icon(
+                            Icons.arrow_forward,
+                            color: Colors.white,
+                          ),
                         ],
                       ),
               );
@@ -127,18 +133,16 @@ class LoginPage extends StatelessWidget {
                     TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
               ),
             ),
-            SizedBox(height: 16),
-            // Facebook connect button (dummy action)
-              ElevatedButton.icon(
-                onPressed: () {
-                  // Add Facebook login logic here
-                },
-                label: Text("Login As Guess", style: TextStyle(color: Colors.white),),
-                style: ElevatedButton.styleFrom(
+            ElevatedButton(
+              onPressed: () {
+                _authController.loginAsGuest(); // Trigger guest login
+              },
+              child: Text('Login as a Guest',
+                  style: TextStyle(color: Colors.white)),
+              style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
-                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-                ),
-              ),
+                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 16)),
+            ),
           ],
         ),
       ),
